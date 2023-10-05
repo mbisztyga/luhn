@@ -1,0 +1,5 @@
+!**/.idea
+!**/node_modules
+!**/front.iml
+!**/src/main/**/out/
+!**/src/test/**/out/
