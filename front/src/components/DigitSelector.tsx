@@ -1,38 +1,29 @@
 import React, {useState} from 'react';
-import {Button, Typography} from "@mui/material";
-
-interface DigitSelectorState {
-    selectedDigit: number | null;
-    selectedDigitsArray: number[];
-}
+import {Button, Paper, Typography} from "@mui/material";
 
 const DigitSelector: React.FC = () => {
-    const [state, setState] = useState<DigitSelectorState>({
-        selectedDigit: null,
-        selectedDigitsArray: []
-    });
+    const [selectedDigitsArray, setSelectedDigitsArray] = useState<number[]>([]);
 
     const handleDigitSelect = (digit: number) => {
-        if (!state.selectedDigitsArray.includes(digit)) {
-            setState((prevState) => ({
-                selectedDigit: digit,
-                selectedDigitsArray: [...prevState.selectedDigitsArray, digit],
-            }));
+        if (!selectedDigitsArray.includes(digit)) {
+            setSelectedDigitsArray((prevState) => [...prevState, digit]);
         } else {
-            setState((prevState) => ({
-                selectedDigit: digit,
-                selectedDigitsArray: prevState.selectedDigitsArray.filter((d) => d !== digit),
-            }));
+            setSelectedDigitsArray((prevState) => prevState.filter((d) => d !== digit));
         }
     };
 
     const shouldHighlight = (digit: number) => {
-        return state.selectedDigitsArray.includes(digit);
+        return selectedDigitsArray.includes(digit);
     }
 
     return (
-        <div>
-            <Typography variant='h2'>Select a Digit</Typography>
+        <Paper sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }}>
+            <Typography variant={'h2'}>Select a Digit</Typography>
             <div>
                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((digit) => (
                     <Button
@@ -45,9 +36,12 @@ const DigitSelector: React.FC = () => {
                     </Button>
                 ))}
             </div>
-            <p>Selected Digits Array: {state.selectedDigitsArray.join(', ')}</p>
-        </div>
+            <Typography variant={'body1'} align="center" alignItems="center">
+                <div>Selected Digits Array:</div>
+                <div>{selectedDigitsArray.join(', ')}</div>
+            </Typography>
+        </Paper>
     );
-};
+}
 
 export default DigitSelector;

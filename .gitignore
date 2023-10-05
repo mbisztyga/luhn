@@ -3,3 +3,5 @@
 !**/front.iml
 !**/src/main/**/out/
 !**/src/test/**/out/
+front/node_modules
+.idea
