@@ -40,8 +40,34 @@ const DigitSelector: React.FC = () => {
                 <div>Selected Digits Array:</div>
                 <div>{selectedDigitsArray.join(', ')}</div>
             </Typography>
+            <Button
+                onClick={()=>sendSelectedDigits(selectedDigitsArray)}
+                sx={{border: '2px red solid'}}
+            ></Button>
         </Paper>
     );
 }
+
+const sendSelectedDigits = async (selectedDigitsArray: number[]) => {
+    const url = 'http://localhost:8080/generate'; // Update the URL as needed
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(selectedDigitsArray),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Received data from server:', data);
+        } else {
+            console.error('Failed to send data to server');
+        }
+    } catch (error) {
+        console.error('Error sending data:', error);
+    }
+};
 
 export default DigitSelector;
