@@ -3,6 +3,7 @@ package com.mbisztyga.luhn.generator.controller;
 import com.mbisztyga.luhn.generator.service.DigitService;
 import com.mbisztyga.luhn.generator.service.impl.DigitServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,8 @@ public class DigitController {
     }
 
     @PostMapping("/generate")
+    @CrossOrigin(origins = "http://localhost:3000")
     public String generateToken(@RequestBody List<Integer> numbers){
-
+        return digitService.generateToken(numbers);
     }
 }
