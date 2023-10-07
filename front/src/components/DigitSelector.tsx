@@ -60,7 +60,7 @@ const sendSelectedDigits = async (selectedDigitsArray: number[]) => {
             body: JSON.stringify(selectedDigitsArray),
         });
         if (response.ok) {
-            const data = await response.json();
+            const data = await response.text();
             console.log('Received data from server:', data);
         } else {
             console.error('Failed to send data to server');

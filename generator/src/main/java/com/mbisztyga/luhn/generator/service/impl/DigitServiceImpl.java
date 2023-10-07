@@ -18,8 +18,6 @@ public class DigitServiceImpl implements DigitService {
     }
 
     public static String generateTokenFromDigits(List<Integer> digits) {
-        // Check if digit 0 is in the original array
-        boolean containsZero = digits.contains(0);
 
         // Create a list to store digits for the token
         List<Integer> tokenDigits = new ArrayList<>();
