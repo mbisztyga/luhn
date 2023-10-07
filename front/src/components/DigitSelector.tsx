@@ -3,6 +3,8 @@ import {Button, Paper, Typography} from "@mui/material";
 
 const DigitSelector: React.FC = () => {
     const [selectedDigitsArray, setSelectedDigitsArray] = useState<number[]>([]);
+    const [receivedToken, setReceivedToken] = useState<string>('');
+    const [isDataReceived, setDataReceived] = useState<boolean>(false);
 
     const handleDigitSelect = (digit: number) => {
         if (!selectedDigitsArray.includes(digit)) {
@@ -15,6 +17,30 @@ const DigitSelector: React.FC = () => {
     const shouldHighlight = (digit: number) => {
         return selectedDigitsArray.includes(digit);
     }
+
+    const sendSelectedDigits = async (selectedDigitsArray: number[]) => {
+        const url = 'http://localhost:8080/generate'; // Update the URL as needed
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedDigitsArray),
+            });
+            if (response.ok) {
+                const data = await response.text();
+                console.log('Received data from server:', data);
+                setDataReceived(true);
+                setReceivedToken(data);
+            } else {
+                console.error('Failed to send data to server');
+            }
+        } catch (error) {
+            console.error('Error sending data:', error);
+        }
+    };
 
     return (
         <Paper sx={{
@@ -43,31 +69,13 @@ const DigitSelector: React.FC = () => {
             <Button
                 onClick={()=>sendSelectedDigits(selectedDigitsArray)}
                 sx={{border: '2px red solid'}}
-            ></Button>
+            >Create Token</Button>
+            {isDataReceived && <Typography variant={'body1'} align="center" alignItems="center">
+                <div>Your token has been created:</div>
+                <div>{receivedToken}</div>
+            </Typography>}
         </Paper>
     );
 }
-
-const sendSelectedDigits = async (selectedDigitsArray: number[]) => {
-    const url = 'http://localhost:8080/generate'; // Update the URL as needed
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(selectedDigitsArray),
-        });
-        if (response.ok) {
-            const data = await response.text();
-            console.log('Received data from server:', data);
-        } else {
-            console.error('Failed to send data to server');
-        }
-    } catch (error) {
-        console.error('Error sending data:', error);
-    }
-};
 
 export default DigitSelector;
