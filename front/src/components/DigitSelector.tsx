@@ -4,7 +4,8 @@ import {Button, Paper, Typography} from "@mui/material";
 const DigitSelector: React.FC = () => {
     const [selectedDigitsArray, setSelectedDigitsArray] = useState<number[]>([]);
     const [receivedToken, setReceivedToken] = useState<string>('');
-    const [isDataReceived, setDataReceived] = useState<boolean>(false);
+    const [isTokenDataReceived, setTokenDataReceived] = useState<boolean>(false);
+    const [validationInfo,setValidationInfo] = useState<string>('');
 
     const handleDigitSelect = (digit: number) => {
         if (!selectedDigitsArray.includes(digit)) {
@@ -32,10 +33,33 @@ const DigitSelector: React.FC = () => {
             if (response.ok) {
                 const data = await response.text();
                 console.log('Received data from server:', data);
-                setDataReceived(true);
+                setTokenDataReceived(true);
                 setReceivedToken(data);
             } else {
                 console.error('Failed to send data to server');
+            }
+        } catch (error) {
+            console.error('Error sending data:', error);
+        }
+    };
+
+    const sendTokenToValidate = async (receivedToken: String) => {
+        const url = 'http://localhost:8081/validate'; // Update the URL as needed
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(receivedToken),
+            });
+            if (response.ok) {
+                const data = await response.text();
+                console.log('Received data from validator server:', data);
+                setValidationInfo(data);
+            } else {
+                console.error('Failed to send data to validator server');
             }
         } catch (error) {
             console.error('Error sending data:', error);
@@ -67,13 +91,23 @@ const DigitSelector: React.FC = () => {
                 <div>{selectedDigitsArray.join(', ')}</div>
             </Typography>
             <Button
-                onClick={()=>sendSelectedDigits(selectedDigitsArray)}
-                sx={{border: '2px red solid'}}
+                onClick={() => sendSelectedDigits(selectedDigitsArray)}
             >Create Token</Button>
-            {isDataReceived && <Typography variant={'body1'} align="center" alignItems="center">
+            {isTokenDataReceived && <Typography
+                variant={'body1'} align="center" alignItems="center">
                 <div>Your token has been created:</div>
                 <div>{receivedToken}</div>
-            </Typography>}
+            </Typography>
+            }
+            {isTokenDataReceived && <Button
+            onClick={()=>sendTokenToValidate(receivedToken)}
+            >Validate token using Luhn algorithm
+            </Button>}
+            {validationInfo && <Typography
+                variant={'body1'} align="center" alignItems="center">
+                <div>{validationInfo}</div>
+            </Typography>
+            }
         </Paper>
     );
 }
