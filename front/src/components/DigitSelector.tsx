@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Paper, Typography} from "@mui/material";
+import InfoTypography from "./InfoTypography";
 
 const DigitSelector: React.FC = () => {
     const [selectedDigitsArray, setSelectedDigitsArray] = useState<number[]>([]);
@@ -20,7 +21,7 @@ const DigitSelector: React.FC = () => {
     }
 
     const sendSelectedDigits = async (selectedDigitsArray: number[]) => {
-        const url = 'http://localhost:8080/generate'; // Update the URL as needed
+        const url = 'http://localhost:8080/generate';
 
         try {
             const response = await fetch(url, {
@@ -44,7 +45,7 @@ const DigitSelector: React.FC = () => {
     };
 
     const sendTokenToValidate = async (receivedToken: String) => {
-        const url = 'http://localhost:8081/validate'; // Update the URL as needed
+        const url = 'http://localhost:8081/validate';
 
         try {
             const response = await fetch(url, {
@@ -86,27 +87,27 @@ const DigitSelector: React.FC = () => {
                     </Button>
                 ))}
             </div>
-            <Typography variant={'body1'} align="center" alignItems="center">
+            <InfoTypography>
                 <div>Selected Digits Array:</div>
                 <div>{selectedDigitsArray.join(', ')}</div>
-            </Typography>
+            </InfoTypography>
             <Button
                 onClick={() => sendSelectedDigits(selectedDigitsArray)}
-            >Create Token</Button>
-            {isTokenDataReceived && <Typography
-                variant={'body1'} align="center" alignItems="center">
-                <div>Your token has been created:</div>
+            >Create Token
+            </Button>
+            {isTokenDataReceived && <InfoTypography>
+                <div>Here is your generated token:</div>
                 <div>{receivedToken}</div>
-            </Typography>
+            </InfoTypography>
             }
             {isTokenDataReceived && <Button
             onClick={()=>sendTokenToValidate(receivedToken)}
             >Validate token using Luhn algorithm
-            </Button>}
-            {validationInfo && <Typography
-                variant={'body1'} align="center" alignItems="center">
+            </Button>
+            }
+            {validationInfo && <InfoTypography>
                 <div>{validationInfo}</div>
-            </Typography>
+            </InfoTypography>
             }
         </Paper>
     );

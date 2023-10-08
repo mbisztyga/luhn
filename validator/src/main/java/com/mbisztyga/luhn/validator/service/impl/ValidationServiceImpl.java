@@ -26,7 +26,7 @@ public class ValidationServiceImpl implements ValidationService {
 
         for (int i = 0; i < 16; i++) {
             int digit = reversedDigits[i];
-            
+
             if (i % 2 == 1) {
                 digit *= 2;
                 if (digit > 9) {
