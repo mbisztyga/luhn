@@ -13,7 +13,6 @@ public class DigitServiceImpl implements DigitService {
 
     @Override
     public String generateToken(List<Integer> availableNumbers){
-        System.out.println(availableNumbers);
         return generateTokenFromDigits(availableNumbers);
     }
 
@@ -48,9 +47,6 @@ public class DigitServiceImpl implements DigitService {
                 tokenBuilder.append('-');
             }
         }
-
-        String formattedToken = tokenBuilder.toString();
-        System.out.println(formattedToken);
-        return formattedToken;
+        return tokenBuilder.toString();
     }
 }
