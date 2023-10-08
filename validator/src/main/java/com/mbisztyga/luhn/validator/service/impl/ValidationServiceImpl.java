@@ -18,12 +18,14 @@ public class ValidationServiceImpl implements ValidationService {
 
         int[] reversedDigits = new int[16];
 
+        // Reverse the order and create an array of values
         for (int i = 0; i < 16; i++) {
             reversedDigits[i] = Character.getNumericValue(digits[15 - i]);
         }
 
         int sum = 0;
 
+        // Luhn algorithm code
         for (int i = 0; i < 16; i++) {
             int digit = reversedDigits[i];
 
